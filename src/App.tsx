@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Plus, ArrowRight, Instagram, Linkedin, Twitter, Phone, Menu, X, Zap, Circle, Users, Dumbbell, Receipt, Percent, ArrowLeft } from 'lucide-react';
+import { Plus, ArrowRight, Instagram, Linkedin, Twitter, Phone, Menu, X, Zap, Circle, Users, Dumbbell, Receipt, Percent, ArrowLeft, Download } from 'lucide-react';
 import { BrowserRouter, Routes, Route, Link, useParams, useNavigate } from 'react-router-dom';
 import { IMAGES } from './constants';
 
 const Navbar = ({ onMenuOpen }: { onMenuOpen: () => void }) => (
   <nav className="flex justify-between items-center px-6 py-2 bg-white border-b border-black/5 sticky top-0 z-40">
     <div className="flex items-center">
-      <Zap size={24} fill="currentColor" className="text-brand-black" />
+      <img src="/logo.png" alt="Фитнес Мастер" className="h-6 w-auto object-contain" />
     </div>
     <button 
       onClick={onMenuOpen}
@@ -103,7 +103,6 @@ const slides = [
     id: 'elite-fitness',
     title: <>Элитный <br /> Фитнес.</>,
     description: <>Силовые тренировки и кондиционирование <br /> для трансформации тела и разума.</>,
-    bgColor: '#F8C8DC',
     imageMobile: IMAGES.HERO_SLIDES[0].mobile,
     imageDesktop: IMAGES.HERO_SLIDES[0].desktop
   },
@@ -111,17 +110,15 @@ const slides = [
     id: 'peak-power',
     title: <>Пиковая <br /> Мощь.</>,
     description: <>Раскройте свой потенциал с нашими <br /> продвинутыми программами тренировок.</>,
-    bgColor: '#E2E8F0',
-    imageMobile: IMAGES.HERO_SLIDES[1].mobile,
-    imageDesktop: IMAGES.HERO_SLIDES[1].desktop
+    imageMobile: '/assets/hero/slide2-mobile-new.jpg',
+    imageDesktop: '/assets/hero/slide2-desktop.png'
   },
   {
     id: 'full-harmony',
     title: <>Полная <br /> Гармония.</>,
     description: <>Найдите баланс и мобильность на занятиях <br /> йогой и восстановительных сессиях.</>,
-    bgColor: '#D1FAE5',
-    imageMobile: IMAGES.HERO_SLIDES[2].mobile,
-    imageDesktop: IMAGES.HERO_SLIDES[2].desktop
+    imageMobile: '/assets/hero/slide3-mobile.jpg',
+    imageDesktop: '/assets/hero/slide3-desktop.jpg'
   }
 ];
 
@@ -181,7 +178,7 @@ const PromoPage = () => {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl"
+            className="aspect-[4/5] rounded-[3rem] overflow-hidden"
           >
             <img 
               src={promo.imageDesktop} 
@@ -226,35 +223,33 @@ const Hero = () => {
     <section className="px-4 md:px-6 py-4 md:py-6 bg-white">
       <Link 
         to={`/promo/${slides[currentSlide].id}`}
-        className="relative aspect-[4/5] md:aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden flex items-center w-full cursor-pointer group"
-        style={{ backgroundColor: slides[currentSlide].bgColor }}
+        className="relative aspect-[4/5] md:aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden flex items-center w-full cursor-pointer group bg-gray-100"
       >
-        {/* Background Image */}
-        <AnimatePresence mode="wait">
+        {/* Background Images */}
+        {slides.map((slide, index) => (
           <motion.div 
-            key={`bg-${currentSlide}`}
+            key={`bg-${index}`}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            animate={{ opacity: index === currentSlide ? 1 : 0 }}
             transition={{ duration: 1, ease: "easeInOut" }}
             className="absolute inset-0 z-0"
           >
             {/* Mobile Image */}
             <img 
-              src={slides[currentSlide].imageMobile} 
+              src={slide.imageMobile} 
               alt="" 
               className="w-full h-full object-cover md:hidden transition-transform duration-700 group-hover:scale-105"
               referrerPolicy="no-referrer"
             />
             {/* Desktop Image */}
             <img 
-              src={slides[currentSlide].imageDesktop} 
+              src={slide.imageDesktop} 
               alt="" 
               className="hidden md:block w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               referrerPolicy="no-referrer"
             />
           </motion.div>
-        </AnimatePresence>
+        ))}
 
         {/* Progress Indicators */}
         <div className="absolute top-6 left-8 right-8 flex gap-2 z-20 max-w-7xl mx-auto">
@@ -323,6 +318,8 @@ interface ClubSectionProps {
   name: string;
   phone: string;
   address: string;
+  logo: string;
+  logoClassName?: string;
   galleryImages: string[];
   pricingData: any[];
   trainingPacks: any[];
@@ -336,6 +333,8 @@ const ClubSection = ({
   name, 
   phone, 
   address, 
+  logo,
+  logoClassName,
   galleryImages, 
   pricingData, 
   trainingPacks, 
@@ -347,6 +346,7 @@ const ClubSection = ({
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [activeTrainerTab, setActiveTrainerTab] = useState<'group' | 'gym'>('group');
   const [activeScheduleTab, setActiveScheduleTab] = useState<'group' | 'gym'>('group');
+  const [selectedScheduleImage, setSelectedScheduleImage] = useState<string | null>(null);
 
   const accordionItems = [
     {
@@ -445,12 +445,13 @@ const ClubSection = ({
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
                 className="flex-shrink-0 w-72 snap-start group cursor-pointer"
+                onClick={() => setSelectedScheduleImage(item.image)}
               >
                 <div className="aspect-[1.414/1] overflow-hidden rounded-2xl mb-3 bg-gray-100 border border-black/5">
                   <img 
                     src={item.image} 
                     alt={item.title} 
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                    className="w-full h-full object-cover transition-all duration-700"
                     referrerPolicy="no-referrer"
                   />
                 </div>
@@ -521,7 +522,7 @@ const ClubSection = ({
                   <img 
                     src={trainer.image} 
                     alt={trainer.name} 
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                    className="w-full h-full object-cover transition-all duration-700"
                     referrerPolicy="no-referrer"
                   />
                 </div>
@@ -542,11 +543,9 @@ const ClubSection = ({
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex justify-center mb-8"
+          className="flex justify-center mb-4"
         >
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 0L24.4903 15.5097L40 20L24.4903 24.4903L20 40L15.5097 24.4903L0 20L15.5097 15.5097L20 0Z" fill="currentColor"/>
-          </svg>
+          <img src={logo} alt={name} className={logoClassName || "h-12 w-auto object-contain"} />
         </motion.div>
         
         <motion.div
@@ -568,18 +567,18 @@ const ClubSection = ({
         <motion.div 
           animate={{ x: ["0%", "-50%"] }}
           transition={{ 
-            duration: 30, 
+            duration: 60, 
             repeat: Infinity, 
             ease: "linear" 
           }}
-          className="flex whitespace-nowrap gap-4 px-4"
+          className="flex whitespace-nowrap"
         >
           {[...galleryImages, ...galleryImages].map((src, idx) => (
-            <div key={idx} className="w-[300px] md:w-[500px] aspect-[16/9] flex-shrink-0 overflow-hidden rounded-[2rem] md:rounded-[3rem] shadow-xl">
+            <div key={idx} className="w-[300px] md:w-[500px] aspect-[16/9] flex-shrink-0 overflow-hidden rounded-[2rem] md:rounded-[3rem] mx-2">
               <img 
                 src={src} 
                 alt={`Gallery image ${idx}`} 
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                className="w-full h-full object-cover transition-all duration-700"
                 referrerPolicy="no-referrer"
               />
             </div>
@@ -618,6 +617,47 @@ const ClubSection = ({
           </div>
         ))}
       </div>
+
+      {/* Schedule Image Modal */}
+      <AnimatePresence>
+        {selectedScheduleImage && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4" 
+            onClick={() => setSelectedScheduleImage(null)}
+          >
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="relative max-w-5xl w-full max-h-[90vh] flex flex-col items-center justify-center" 
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                onClick={() => setSelectedScheduleImage(null)}
+                className="absolute -top-12 right-0 md:top-4 md:-right-12 text-white hover:text-white/70 transition-colors z-10 bg-white/10 hover:bg-white/20 p-2 rounded-full backdrop-blur-sm"
+              >
+                <X size={24} />
+              </button>
+              <img 
+                src={selectedScheduleImage} 
+                alt="Расписание" 
+                className="max-w-full max-h-[75vh] object-contain rounded-lg"
+              />
+              <a 
+                href={selectedScheduleImage} 
+                download
+                className="mt-6 px-8 py-3 bg-white text-black font-bold uppercase tracking-widest text-xs rounded-full hover:bg-white/90 transition-colors flex items-center gap-2 shadow-lg"
+              >
+                <Download size={16} />
+                Скачать расписание
+              </a>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
@@ -628,7 +668,7 @@ const ProgramCard = ({ title, description, image, linkText }: { title: string, d
       <img 
         src={image} 
         alt={title} 
-        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
         referrerPolicy="no-referrer"
       />
     </div>
@@ -793,6 +833,7 @@ const AboutUs = () => {
   return (
     <section className="py-24 overflow-hidden bg-[#1a1a1a] text-white">
       <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
+        <h2 className="text-sm font-bold uppercase tracking-widest text-white/40 mb-4">О НАС</h2>
         <motion.p 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -822,7 +863,7 @@ const AboutUs = () => {
               <img 
                 src={src} 
                 alt={`Gallery image ${idx}`} 
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500 opacity-60 hover:opacity-100"
+                className="w-full h-full object-cover transition-all duration-500 opacity-60 hover:opacity-100"
                 referrerPolicy="no-referrer"
               />
             </div>
@@ -859,7 +900,7 @@ const AboutUs = () => {
 };
 
 const MapSection = () => (
-  <section className="w-full h-[450px] bg-gray-100 relative grayscale hover:grayscale-0 transition-all duration-700 overflow-hidden">
+  <section className="w-full h-[450px] bg-gray-100 relative transition-all duration-700 overflow-hidden">
     <iframe 
       src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d13854.444444444445!2d33.075!3d68.96!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z0KTQuNGC0L3QtdGBINCc0LDRgdGC0LXRgCDQnNGD0YDQvNCw0L3RgdC6!5e0!3m2!1sru!2sru!4v1710000000000!5m2!1sru!2sru" 
       className="absolute inset-0 w-full h-full border-0"
@@ -972,6 +1013,49 @@ export default function App() {
     infrastructure: ["Два зала групповых программ", "Тренажерный зал", "Душевые", "Студия Кинезис", "Кабинет диагностики"]
   };
 
+  const pervomayskyTrainers = [
+    { name: "Арина Кузнецова", role: "Инструктор групповых программ", category: 'group', image: "/assets/trainers/nRHmXaoJnV0.jpg" },
+    { name: "Софья Калинина", role: "Инструктор групповых программ", category: 'group', image: "/assets/trainers/Xu-5KpoCa0s.jpg" },
+    { name: "Елена Шумилова", role: "Инструктор групповых программ", category: 'group', image: "/assets/trainers/hxAb_zzTgus.jpg" },
+    { name: "Клавдия Прокофьева", role: "Инструктор групповых программ", category: 'group', image: "/assets/trainers/VC4fxXQxSbE.jpg" },
+    { name: "Надежда Палиенко", role: "Инструктор групповых программ", category: 'group', image: "/assets/trainers/_rzYpd-Nxy0.jpg" },
+    { name: "Александр Бердников", role: "Персональный тренер", category: 'gym', image: "/assets/trainers/N0RtdYI2azM.jpg" },
+    { name: "Николай Марук", role: "Персональный тренер", category: 'gym', image: "/assets/trainers/vmCpSJBADGk.jpg" },
+    { name: "Александр Кублицкий", role: "Персональный тренер", category: 'gym', image: "/assets/trainers/KhT3u63ZIRY.jpg" },
+    { name: "Роза Соловьева", role: "Персональный тренер", category: 'gym', image: "/assets/trainers/tcyPQXqDdqc.jpg" }
+  ];
+
+  const pervomayskySchedules = {
+    group: [
+      { title: "Расписание 1", image: "/assets/schedules/ckgwoZ0er6Q.jpg" },
+      { title: "Расписание 2", image: "/assets/schedules/NUomYewTydA.jpg" }
+    ],
+    gym: [
+      { title: "Тренажерный зал", image: "/assets/schedules/KHfvoz2GRAQ.jpg" }
+    ]
+  };
+
+  const pervomayskyGallery = [
+    "/assets/gallery/pervomaysky/002.jpg",
+    "/assets/gallery/pervomaysky/005.jpg",
+    "/assets/gallery/pervomaysky/043.jpg",
+    "/assets/gallery/pervomaysky/037.jpg",
+    "/assets/gallery/pervomaysky/039.jpg",
+    "/assets/gallery/pervomaysky/022.jpg",
+    "/assets/gallery/pervomaysky/024.jpg",
+    "/assets/gallery/pervomaysky/019.jpg",
+    "/assets/gallery/pervomaysky/025.jpg",
+    "/assets/gallery/pervomaysky/029.jpg",
+    "/assets/gallery/pervomaysky/028.jpg",
+    "/assets/gallery/pervomaysky/af0F-WUgO2wj6TNx5P-Q.jpg",
+    "/assets/gallery/pervomaysky/049.jpg",
+    "/assets/gallery/pervomaysky/ryJ_Mf2stUeYT8MwTlwz.jpg",
+    "/assets/gallery/pervomaysky/052.jpg",
+    "/assets/gallery/pervomaysky/KapJ4UVOqoxo5xT1icGD.jpg",
+    "/assets/gallery/pervomaysky/062.jpg",
+    "/assets/gallery/pervomaysky/064.jpg"
+  ];
+
   return (
     <BrowserRouter>
       <div className="min-h-screen flex flex-col">
@@ -987,22 +1071,28 @@ export default function App() {
                 name="Фитнес Мастер Первомайский"
                 phone="+7 (8152) 53-97-25"
                 address="пр. Кольский 178, 4 этаж"
-                galleryImages={IMAGES.CLUB_GALLERY}
+                logo="/master.png"
                 {...clubData}
+                galleryImages={pervomayskyGallery}
+                trainers={pervomayskyTrainers}
+                schedules={pervomayskySchedules}
               />
 
               <ClubSection 
                 name="Фитнес Мастер Ленинский"
-                phone="+7 (8152) 22-44-22"
+                phone="+7 (8152) 41-25-88"
                 address="ул. Хлобыстова 41А"
+                logo="/master.png"
                 galleryImages={IMAGES.CLUB_GALLERY}
                 {...clubData}
               />
 
               <ClubSection 
                 name="Леди Фитнес Октябрьский"
-                phone="+7 (8152) 45-45-45"
+                phone="+7 (8152) 45-78-57"
                 address="ул. Воровского 15A"
+                logo="/lady.png"
+                logoClassName="h-16 w-auto object-contain"
                 galleryImages={IMAGES.CLUB_GALLERY}
                 {...clubData}
               />
