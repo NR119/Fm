@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Plus, ArrowRight, Instagram, Linkedin, Twitter, Phone, Menu, X, Zap, Circle, Users, Dumbbell, Receipt, Percent, ArrowLeft, Download } from 'lucide-react';
+import { Plus, ArrowRight, Instagram, Linkedin, Twitter, Phone, Menu, X, Zap, Circle, Users, Dumbbell, Receipt, Percent, ArrowLeft, Download, Check, Music, Activity } from 'lucide-react';
 import { BrowserRouter, Routes, Route, Link, useParams, useNavigate } from 'react-router-dom';
 import { IMAGES } from './constants';
 
@@ -24,19 +24,32 @@ const FullMenu = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void })
     {
       name: "Фитнес Мастер Первомайский",
       phone: "+7 (8152) 53-97-25",
-      address: "пр. Кольский 178, 4 этаж"
+      address: "пр. Кольский 178, 4 этаж",
+      id: "club-pervomaysky"
     },
     {
       name: "Фитнес Мастер Ленинский",
       phone: "+7 (8152) 41-25-88",
-      address: "ул. Хлобыстова 41А, 2 этаж"
+      address: "ул. Хлобыстова 41А, 2 этаж",
+      id: "club-leninsky"
     },
     {
       name: "Леди Фитнес",
       phone: "+7 (8152) 45-78-57",
-      address: "ул. Воровского 15A, 4 этаж"
+      address: "ул. Воровского 15A, 4 этаж",
+      id: "club-lady"
     }
   ];
+
+  const scrollToClub = (id: string) => {
+    onClose();
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 300); // Wait for menu to close
+  };
 
   return (
     <AnimatePresence>
@@ -66,7 +79,12 @@ const FullMenu = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void })
                   transition={{ delay: 0.1 * index + 0.2 }}
                   className="space-y-4"
                 >
-                  <h3 className="text-xl md:text-2xl font-black tracking-tighter leading-none">{club.name}</h3>
+                  <h3 
+                    className="text-xl md:text-2xl font-black tracking-tighter leading-none cursor-pointer hover:opacity-70 transition-opacity"
+                    onClick={() => scrollToClub(club.id)}
+                  >
+                    {club.name}
+                  </h3>
                   <div className="space-y-1">
                     <a href={`tel:${club.phone.replace(/\D/g, '')}`} className="block text-xl font-medium hover:underline underline-offset-4">{club.phone}</a>
                     <p className="text-sm text-black/60">{club.address}</p>
@@ -85,7 +103,7 @@ const FullMenu = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void })
                 <a href="#" onClick={onClose} className="hover:underline underline-offset-8">Вакансии</a>
                 <a href="https://vk.com" target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-8">Группа ВК</a>
               </div>
-              <div className="text-[9px] font-bold uppercase tracking-widest text-black/40 mt-4">Сеть спортивных клубов в Мурманске <span className="italic">с 1991</span></div>
+              <div className="text-[9px] font-bold uppercase tracking-widest text-black/40 mt-4">Сеть спортивных клубов в Мурманске<br/><span className="italic">с 1991</span></div>
             </motion.div>
           </div>
           
@@ -101,26 +119,200 @@ const FullMenu = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void })
 const slides = [
   {
     id: 'elite-fitness',
-    title: <>Элитный <br /> Фитнес.</>,
-    description: <>Силовые тренировки и кондиционирование <br /> для трансформации тела и разума.</>,
+    title: "Снег тает — мотивация растет",
+    description: (
+      <div className="space-y-4">
+        <p>Если вы готовы к трансформации уже сейчас - ловите момент. На персональные тренировки у Алены Капустиной щедрая акция: блок из 8 тренировок за 4000 ₽ вместо 4800!</p>
+        
+        <p>
+          Время для вашего прогресса:<br />
+          - Вторник/четверг: 10:00-12:00<br />
+          - Суббота: 11:00-13:00
+        </p>
+
+        <p>Не тяните, места улетят!</p>
+
+        <p>
+          Задать вопросы и записаться на тренировку можно через:<br />
+          - Директ тренера: <a href="https://vk.ru/alena_1611" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Алена Капустина</a><br />
+          - Телефон клуба: +7 (8152) 45-78-57<br />
+          ул. Воровского 15А, 4 этаж<br />
+          #ледифитнес #октябрьский
+        </p>
+      </div>
+    ),
     imageMobile: IMAGES.HERO_SLIDES[0].mobile,
     imageDesktop: IMAGES.HERO_SLIDES[0].desktop
   },
   {
-    id: 'peak-power',
-    title: <>Пиковая <br /> Мощь.</>,
-    description: <>Раскройте свой потенциал с нашими <br /> продвинутыми программами тренировок.</>,
+    id: 'catch-moment',
+    title: "Лови момент✨",
+    description: (
+      <div className="space-y-4">
+        <p>с 20 по 28 марта включительно!</p>
+        
+        <p>Можно не только сэкономить, но и оплатить карту частями.</p>
+        
+        <p>Безлимитная карта на 3 месяца за ✅11500 ₽ вместо 13000 ₽.</p>
+        
+        <p>
+          В рассрочку двумя платежами:<br />
+          - Первый период за 5750 ₽ на 31 день<br />
+          - Второй период за 5750 ₽ на 55 дней
+        </p>
+        
+        <p>Воспользуйся выгодой и вперёд к результатам👟</p>
+        
+        <p>
+          Позвонить: <a href="tel:+78152707023" className="underline underline-offset-4">70-70-23</a><br />
+          Написать: <a href="https://vk.me/fm_lf" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">vk.me/fm_lf</a><br />
+          #фитнесмастер #первомайский #ленинский #ледифитнес #октябрьский
+        </p>
+      </div>
+    ),
     imageMobile: '/assets/hero/slide2-mobile-new.jpg',
     imageDesktop: '/assets/hero/slide2-desktop.png'
   },
   {
     id: 'full-harmony',
-    title: <>Полная <br /> Гармония.</>,
-    description: <>Найдите баланс и мобильность на занятиях <br /> йогой и восстановительных сессиях.</>,
+    title: "Оформление, гибкий график и фитнес в подарок🤗🌸",
+    description: (
+      <div className="space-y-4">
+        <p>Приглашаем на работу администратора! Любишь общаться с людьми и держать все под контролем? Тогда должность администратора в одном из наших клубов это про тебя🤝</p>
+        
+        <p>Сеть Фитнес Мастер и Леди Фитнес в Мурманске - это три спортивных клуба: Фитнес Мастер в Первомайском и Ленинском районах и женский спортивный клуб Леди Фитнес в Октябрьском. Первый наш клуб открылся в 1991 году!</p>
+
+        <p>
+          Что мы предлагаем на должности администратора:<br />
+          - Сменный график по 7 часов<br />
+          - Оплата за смену - 2800 ₽<br />
+          - Выплаты два раза в месяц<br />
+          - Обучение и стажировка<br />
+          - Оформление по трудовому кодексу<br />
+          - Бесплатные занятия в клубе
+        </p>
+
+        <p>
+          Адреса клубов:<br />
+          пр. Кольский 178, 4 этаж<br />
+          ул. Хлобыстова 41А, 2 этаж<br />
+          ул. Воровского 15A , 4 этаж
+        </p>
+
+        <p>Если вы заинтересованы в работе, хотите пройти собеседование или задать вопросы, оставьте отклик, отправив форму ниже👌</p>
+
+        <p>
+          Директор по персоналу<br />
+          Галина Демьянченко<br />
+          +7 (921) 709-74-46
+        </p>
+      </div>
+    ),
     imageMobile: '/assets/hero/slide3-mobile.jpg',
     imageDesktop: '/assets/hero/slide3-desktop.jpg'
   }
 ];
+
+const VacancyForm = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    clubs: [] as string[],
+    phone: ''
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+  };
+
+  const toggleClub = (club: string) => {
+    setFormData(prev => ({
+      ...prev,
+      clubs: prev.clubs.includes(club) 
+        ? prev.clubs.filter(c => c !== club)
+        : [...prev.clubs, club]
+    }));
+  };
+
+  if (isSubmitted) {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-black text-white p-12 rounded-[2rem] text-center space-y-4"
+      >
+        <h3 className="text-2xl font-black uppercase tracking-tighter">Спасибо за отклик!</h3>
+        <p className="opacity-60">Мы свяжемся с вами в ближайшее время.</p>
+      </motion.div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-8 max-w-xl">
+      <div className="space-y-2">
+        <label className="text-[10px] font-bold uppercase tracking-widest text-black/40">Имя</label>
+        <input 
+          type="text" 
+          required
+          placeholder="Ваше имя"
+          value={formData.name}
+          onChange={e => setFormData({...formData, name: e.target.value})}
+          className="w-full px-6 py-4 rounded-full border border-black/10 focus:border-black outline-none transition-all text-lg font-medium bg-gray-50/50"
+        />
+      </div>
+
+      <div className="space-y-4">
+        <label className="text-[10px] font-bold uppercase tracking-widest text-black/40">В каком клубе интересует вакансия</label>
+        <div className="space-y-3">
+          {[
+            "Фитнес Мастер (Первомайский р-н)",
+            "Фитнес Мастер (Ленинский р-н)",
+            "Леди Фитнес (Октябрьский р-н)"
+          ].map((club) => (
+            <label key={club} className="flex items-center gap-4 cursor-pointer group">
+              <div className="relative flex items-center justify-center">
+                <input 
+                  type="checkbox" 
+                  className="peer sr-only"
+                  checked={formData.clubs.includes(club)}
+                  onChange={() => toggleClub(club)}
+                />
+                <div className="w-6 h-6 border-2 border-black/10 rounded-lg peer-checked:bg-black peer-checked:border-black transition-all" />
+                <Check size={14} className="absolute text-white opacity-0 peer-checked:opacity-100 transition-opacity" />
+              </div>
+              <span className="text-sm font-medium group-hover:opacity-60 transition-opacity">{club}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-[10px] font-bold uppercase tracking-widest text-black/40">Телефон</label>
+        <input 
+          type="tel" 
+          required
+          placeholder="+7 (___) ___-__-__"
+          value={formData.phone}
+          onChange={e => setFormData({...formData, phone: e.target.value})}
+          className="w-full px-6 py-4 rounded-full border border-black/10 focus:border-black outline-none transition-all text-lg font-medium bg-gray-50/50"
+        />
+      </div>
+
+      <div className="space-y-6 pt-4">
+        <button 
+          type="submit"
+          className="w-full bg-black text-white py-6 rounded-full font-black uppercase tracking-widest hover:scale-[0.98] active:scale-95 transition-all"
+        >
+          Отправить
+        </button>
+        <p className="text-[9px] text-center text-black/40 leading-relaxed uppercase tracking-widest px-8">
+          Нажимая на кнопку, вы даете согласие на обработку персональных данных и соглашаетесь с <a href="#" className="underline underline-offset-2">Политикой конфиденциальности</a>.
+        </p>
+      </div>
+    </form>
+  );
+};
 
 const PromoPage = () => {
   const { id } = useParams();
@@ -146,39 +338,12 @@ const PromoPage = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="flex flex-col gap-12">
           <motion.div
-            initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.85] mb-8 uppercase">
-              {promo.title}
-            </h1>
-            <p className="text-xl md:text-2xl font-medium text-black/60 leading-tight mb-12">
-              {promo.description}
-            </p>
-            <div className="space-y-8">
-              <div className="p-8 bg-gray-50 rounded-3xl border border-black/5">
-                <h3 className="text-sm font-bold uppercase tracking-widest mb-4">Что включено</h3>
-                <ul className="space-y-4 text-lg font-medium">
-                  <li className="flex items-center gap-3"><Circle size={8} fill="currentColor" /> Безлимитный доступ 24/7</li>
-                  <li className="flex items-center gap-3"><Circle size={8} fill="currentColor" /> Индивидуальный план питания</li>
-                  <li className="flex items-center gap-3"><Circle size={8} fill="currentColor" /> 4 персональные тренировки</li>
-                  <li className="flex items-center gap-3"><Circle size={8} fill="currentColor" /> Доступ ко всем групповым занятиям</li>
-                </ul>
-              </div>
-              <button className="w-full py-6 bg-brand-black text-white rounded-full text-sm font-bold uppercase tracking-widest hover:bg-black/90 transition-colors shadow-2xl">
-                Записаться по акции
-              </button>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
+            initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="aspect-[4/5] rounded-[3rem] overflow-hidden"
+            transition={{ delay: 0.2 }}
+            className="aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-gray-100"
           >
             <img 
               src={promo.imageDesktop} 
@@ -186,6 +351,31 @@ const PromoPage = () => {
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
+          </motion.div>
+
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="max-w-4xl"
+          >
+            <h1 className="text-4xl md:text-7xl font-black tracking-tighter leading-[0.9] mb-8 uppercase">
+              {promo.title}
+            </h1>
+            <div className="text-lg md:text-xl font-medium text-black/60 leading-relaxed">
+              {promo.description}
+            </div>
+
+            {promo.id === 'full-harmony' && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="mt-8"
+              >
+                <VacancyForm />
+              </motion.div>
+            )}
           </motion.div>
         </div>
       </div>
@@ -197,6 +387,7 @@ const Hero = () => {
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [progress, setProgress] = React.useState(0);
   const SLIDE_DURATION = 5000;
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     let startTime = Date.now();
@@ -219,10 +410,30 @@ const Hero = () => {
     return () => cancelAnimationFrame(animationFrame);
   }, [currentSlide]);
 
+  const handleInteraction = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const width = rect.width;
+    const threshold = width * 0.15;
+
+    if (x < threshold) {
+      // Left side (15%) - previous slide
+      setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+      setProgress(0);
+    } else if (x > width - threshold) {
+      // Right side (15%) - next slide
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setProgress(0);
+    } else {
+      // Middle (70%) - navigate to promo
+      navigate(`/promo/${slides[currentSlide].id}`);
+    }
+  };
+
   return (
     <section className="px-4 md:px-6 py-4 md:py-6 bg-white">
-      <Link 
-        to={`/promo/${slides[currentSlide].id}`}
+      <div 
+        onClick={handleInteraction}
         className="relative aspect-[4/5] md:aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden flex items-center w-full cursor-pointer group bg-gray-100"
       >
         {/* Background Images */}
@@ -266,13 +477,13 @@ const Hero = () => {
             </div>
           ))}
         </div>
-      </Link>
+      </div>
     </section>
   );
 };
 
 const DistrictBanner = () => (
-  <section className="px-6 pt-8 md:pt-12 pb-4 md:pb-6 bg-white text-center">
+  <section className="px-6 pt-8 md:pt-12 pb-12 bg-white text-center">
     <div className="max-w-7xl mx-auto">
       <motion.h2 
         initial={{ opacity: 0, y: 20 }}
@@ -315,6 +526,7 @@ const DistrictBanner = () => (
 );
 
 interface ClubSectionProps {
+  id?: string;
   name: string;
   phone: string;
   address: string;
@@ -327,9 +539,11 @@ interface ClubSectionProps {
   schedules: any;
   classDescriptions: any[];
   infrastructure: string[];
+  showName?: boolean;
 }
 
 const ClubSection = ({ 
+  id,
   name, 
   phone, 
   address, 
@@ -341,9 +555,10 @@ const ClubSection = ({
   trainers, 
   schedules, 
   classDescriptions, 
-  infrastructure 
+  infrastructure,
+  showName = true
 }: ClubSectionProps) => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndices, setOpenIndices] = useState<number[]>([]);
   const [activeTrainerTab, setActiveTrainerTab] = useState<'group' | 'gym'>('group');
   const [activeScheduleTab, setActiveScheduleTab] = useState<'group' | 'gym'>('group');
   const [selectedScheduleImage, setSelectedScheduleImage] = useState<string | null>(null);
@@ -383,29 +598,72 @@ const ClubSection = ({
     {
       title: "Стоимость карт",
       content: (
-        <div className="pb-8 space-y-6">
-          <div className="overflow-x-auto no-scrollbar flex gap-4 snap-x snap-mandatory pb-4">
+        <div className="pb-8">
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:pb-0 md:grid md:grid-cols-3 no-scrollbar mb-4">
             {pricingData.map((item, i) => (
-              <div key={i} className="flex-shrink-0 w-64 snap-start bg-gray-50 p-6 rounded-2xl border border-black/5 hover:border-black/20 transition-all">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-black/40 mb-4">{item.period}</div>
-                <div className="space-y-4">
+              <div key={i} className="w-[70vw] min-w-[240px] md:w-auto md:min-w-0 flex-shrink-0 snap-center relative overflow-hidden rounded-2xl p-6 border border-black/5 bg-gradient-to-br from-violet-50/80 via-white to-fuchsia-50/80 hover:shadow-md hover:border-black/10 transition-all">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3" />
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-fuchsia-500/10 to-violet-500/10 rounded-full blur-2xl transform -translate-x-1/2 translate-y-1/2" />
+                
+                <div className="relative z-10 flex flex-col justify-between gap-6 h-full">
                   <div>
-                    <div className="text-xs font-bold uppercase mb-1">Безлимит</div>
-                    <div className="text-2xl font-black tracking-tighter">{item.unlimited}</div>
+                    <div className="text-[10px] font-bold uppercase tracking-widest text-black/40 mb-1">Срок действия</div>
+                    <div className="text-2xl font-black tracking-tighter uppercase">{item.period}</div>
                   </div>
-                  <div className="pt-4 border-t border-black/5">
-                    <div className="text-[10px] font-bold uppercase mb-1 text-black/60">Дневной <span className="lowercase font-medium">(9:00 - 16:00)</span></div>
-                    <div className="text-lg font-bold tracking-tight">{item.day}</div>
+
+                  <div className="flex gap-4 sm:gap-8">
+                    <div>
+                      <div className="text-[10px] font-bold uppercase mb-1 text-black/40">Безлимит</div>
+                      <div className="text-xl font-bold tracking-tight whitespace-nowrap">{item.unlimited}</div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-bold uppercase mb-1 text-black/40">Дневной <span className="lowercase font-medium">(9:00 - 16:00)</span></div>
+                      <div className="text-xl font-bold tracking-tight whitespace-nowrap">{item.day}</div>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-          <div className="overflow-x-auto no-scrollbar flex gap-4 snap-x snap-mandatory">
+
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:pb-0 md:grid md:grid-cols-3 no-scrollbar">
+            <div className="w-[70vw] min-w-[240px] md:w-auto md:min-w-0 flex-shrink-0 snap-center relative overflow-hidden rounded-2xl p-6 border border-black/5 bg-gradient-to-br from-cyan-50/80 via-white to-blue-50/80 hover:shadow-md hover:border-black/10 transition-all">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3" />
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-blue-500/10 to-cyan-500/10 rounded-full blur-2xl transform -translate-x-1/2 translate-y-1/2" />
+              
+              <div className="relative z-10 flex flex-col justify-between gap-6 h-full">
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-black/40 mb-1">Визит</div>
+                  <div className="text-2xl font-black tracking-tighter uppercase">Разовое посещение</div>
+                </div>
+
+                <div className="flex gap-8">
+                  <div>
+                    <div className="text-[10px] font-bold uppercase mb-1 text-black/40">Стоимость</div>
+                    <div className="text-xl font-bold tracking-tight">750 ₽</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {trainingPacks.map((item, i) => (
-              <div key={i} className="flex-shrink-0 w-64 snap-start bg-gray-50 p-6 rounded-2xl border border-black/5 flex justify-between items-center">
-                <div className="text-xs font-bold uppercase tracking-widest">{item.count}</div>
-                <div className="text-xl font-black tracking-tighter">{item.price}</div>
+              <div key={i} className="w-[70vw] min-w-[240px] md:w-auto md:min-w-0 flex-shrink-0 snap-center relative overflow-hidden rounded-2xl p-6 border border-black/5 bg-gradient-to-br from-cyan-50/80 via-white to-blue-50/80 hover:shadow-md hover:border-black/10 transition-all">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3" />
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-blue-500/10 to-cyan-500/10 rounded-full blur-2xl transform -translate-x-1/2 translate-y-1/2" />
+                
+                <div className="relative z-10 flex flex-col justify-between gap-6 h-full">
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-widest text-black/40 mb-1">Пакет</div>
+                    <div className="text-2xl font-black tracking-tighter uppercase">{item.count}</div>
+                  </div>
+
+                  <div className="flex gap-8">
+                    <div>
+                      <div className="text-[10px] font-bold uppercase mb-1 text-black/40">Стоимость</div>
+                      <div className="text-xl font-bold tracking-tight">{item.price}</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -416,6 +674,12 @@ const ClubSection = ({
       title: "Расписание тренировок",
       content: (
         <div className="pb-8 space-y-8">
+          {/* Hidden Preload Div */}
+          <div className="hidden">
+            {schedules.group.map((s: any) => <img key={s.image} src={s.image} alt="" />)}
+            {schedules.gym.map((s: any) => <img key={s.image} src={s.image} alt="" />)}
+            {trainers.map((t: any) => <img key={t.image} src={t.image} alt="" />)}
+          </div>
           <div className="flex gap-4 border-b border-black/5">
             <button 
               onClick={() => setActiveScheduleTab('group')}
@@ -447,7 +711,7 @@ const ClubSection = ({
                 className="flex-shrink-0 w-72 snap-start group cursor-pointer"
                 onClick={() => setSelectedScheduleImage(item.image)}
               >
-                <div className="aspect-[1.414/1] overflow-hidden rounded-2xl mb-3 bg-gray-100 border border-black/5">
+                <div className="aspect-[1.414/1] overflow-hidden rounded-2xl bg-gray-100 border border-black/5">
                   <img 
                     src={item.image} 
                     alt={item.title} 
@@ -455,32 +719,53 @@ const ClubSection = ({
                     referrerPolicy="no-referrer"
                   />
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-[10px] font-bold uppercase tracking-widest">{item.title}</span>
-                  <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
               </motion.div>
             ))}
           </div>
 
-          <div className="space-y-4 pt-4">
-            <div className="text-[10px] font-bold uppercase tracking-widest text-black/40">Описание классов</div>
-            <div className="grid grid-cols-2 gap-4">
-              {classDescriptions.map((cls, i) => (
-                <div key={i} className="bg-gray-50 p-4 rounded-2xl border border-black/5">
-                  <h5 className="text-xs font-bold uppercase mb-1 tracking-tight flex items-center gap-1.5">
-                    {cls.type === 'active' ? (
-                      <Zap size={12} className="text-brand-black fill-brand-black" />
-                    ) : (
-                      <Circle size={12} className="text-brand-black fill-brand-black" />
-                    )}
-                    {cls.title}
-                  </h5>
-                  <p className="text-[11px] text-black/60 leading-tight">{cls.description}</p>
-                </div>
-              ))}
+          {activeScheduleTab === 'group' && (
+            <div className="space-y-4 pt-1 -mt-[0.6rem]">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-black/40">Тренировки в расписании</div>
+              <div className="grid grid-cols-1 gap-3 pb-2">
+                {classDescriptions.map((cls, i) => (
+                  <div 
+                    key={i} 
+                    className={`p-4 rounded-2xl border border-black/5 ${
+                      cls.type === 'active' 
+                        ? 'bg-gradient-to-br from-[#f7fee7] to-[#ecfccb]' 
+                        : cls.type === 'dance'
+                        ? 'bg-gradient-to-br from-fuchsia-50 to-pink-100'
+                        : cls.type === 'kinesis'
+                        ? 'bg-gradient-to-br from-yellow-50 to-amber-100'
+                        : 'bg-gradient-to-br from-[#eff6ff] to-[#dbeafe]'
+                    }`}
+                  >
+                    <h5 className="text-xs font-bold uppercase mb-1 tracking-tight flex items-center gap-1.5">
+                      {cls.type === 'active' ? (
+                        <Zap size={12} className="text-brand-black" />
+                      ) : cls.type === 'dance' ? (
+                        <Music size={12} className="text-brand-black" />
+                      ) : cls.type === 'kinesis' ? (
+                        <Activity size={12} className="text-brand-black" />
+                      ) : (
+                        <Circle size={12} className="text-brand-black" />
+                      )}
+                      {cls.title}
+                    </h5>
+                    <p className="text-[11px] text-black/60 leading-tight">{cls.description}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+
+          {activeScheduleTab === 'gym' && (
+            <div className="space-y-4 pt-1 -mt-[0.6rem]">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-black/40">
+                на персональные тренировки обязательна предварительная запись по телефону или на рецепции клуба
+              </div>
+            </div>
+          )}
         </div>
       )
     },
@@ -526,7 +811,11 @@ const ClubSection = ({
                     referrerPolicy="no-referrer"
                   />
                 </div>
-                <h4 className="text-base font-bold uppercase tracking-tight leading-tight mb-1">{trainer.name}</h4>
+                <h4 className="text-base font-bold uppercase tracking-tight leading-tight mb-1">
+                  {trainer.name.split(' ').map((part, idx) => (
+                    <span key={idx} className="block">{part}</span>
+                  ))}
+                </h4>
                 <p className="text-[9px] font-bold uppercase tracking-widest text-black/40">{trainer.role}</p>
               </motion.div>
             ))}
@@ -537,7 +826,7 @@ const ClubSection = ({
   ];
 
   return (
-    <section className="px-4 md:px-6 pt-6 pb-12 overflow-hidden border-b border-black/5 last:border-0">
+    <section id={id} className="px-4 md:px-6 pt-6 pb-12 overflow-hidden scroll-mt-20">
       <div className="max-w-7xl mx-auto text-center mb-8">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -555,7 +844,7 @@ const ClubSection = ({
           transition={{ delay: 0.2 }}
           className="space-y-4"
         >
-          <h3 className="text-2xl md:text-4xl font-black tracking-tighter leading-none uppercase">{name}</h3>
+          {showName && <h3 className="text-2xl md:text-4xl font-black tracking-tighter leading-none uppercase">{name}</h3>}
           <div className="space-y-1">
             <a href={`tel:${phone.replace(/\D/g, '')}`} className="block text-xl font-medium hover:underline underline-offset-4">{phone}</a>
             <p className="text-sm text-black/60 uppercase tracking-widest font-bold">{address}</p>
@@ -563,11 +852,11 @@ const ClubSection = ({
         </motion.div>
       </div>
       
-      <div className="relative flex overflow-x-hidden mb-12 -mx-4 md:-mx-6">
+      <div className="relative flex overflow-x-hidden mb-6 -mx-4 md:-mx-6">
         <motion.div 
           animate={{ x: ["0%", "-50%"] }}
           transition={{ 
-            duration: 60, 
+            duration: galleryImages.length * 3.33, 
             repeat: Infinity, 
             ease: "linear" 
           }}
@@ -590,19 +879,19 @@ const ClubSection = ({
         {accordionItems.map((item, index) => (
           <div key={index} className="border-b border-black/10">
             <button 
-              onClick={() => setOpenIndex(openIndex === index ? null : index)}
+              onClick={() => setOpenIndices(prev => prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index])}
               className="w-full py-3 flex justify-between items-center text-left hover:opacity-70 transition-opacity"
             >
               <span className="text-base font-bold uppercase tracking-tight">{item.title}</span>
               <motion.div
-                animate={{ rotate: openIndex === index ? 45 : 0 }}
+                animate={{ rotate: openIndices.includes(index) ? 45 : 0 }}
                 transition={{ duration: 0.3 }}
               >
                 <Plus size={24} />
               </motion.div>
             </button>
             <AnimatePresence>
-              {openIndex === index && (
+              {openIndices.includes(index) && (
                 <motion.div
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
@@ -646,14 +935,32 @@ const ClubSection = ({
                 alt="Расписание" 
                 className="max-w-full max-h-[75vh] object-contain rounded-lg"
               />
-              <a 
-                href={selectedScheduleImage} 
-                download
+              <button 
+                onClick={async (e) => {
+                  e.preventDefault();
+                  if (!selectedScheduleImage) return;
+                  try {
+                    const response = await fetch(selectedScheduleImage);
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `schedule-${new Date().getTime()}.jpg`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url);
+                  } catch (error) {
+                    console.error('Download failed:', error);
+                    // Fallback to opening in new tab if fetch fails
+                    window.open(selectedScheduleImage, '_blank');
+                  }
+                }}
                 className="mt-6 px-8 py-3 bg-white text-black font-bold uppercase tracking-widest text-xs rounded-full hover:bg-white/90 transition-colors flex items-center gap-2 shadow-lg"
               >
                 <Download size={16} />
                 Скачать расписание
-              </a>
+              </button>
             </motion.div>
           </motion.div>
         )}
@@ -760,7 +1067,7 @@ const AccordionItem = ({ title, content, isOpen, onClick }: AccordionItemProps) 
 );
 
 const Philosophy = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndices, setOpenIndices] = useState<number[]>([]);
 
   const items = [
     {
@@ -770,10 +1077,6 @@ const Philosophy = () => {
     {
       title: "Сила сообщества",
       content: "Мы верим в силу коллектива. Наши участники поддерживают друг друга, создавая среду, в которой каждый процветает."
-    },
-    {
-      title: "Целостный подход",
-      content: "Фитнес — это не только зал. Мы даем рекомендации по питанию, восстановлению и ментальной устойчивости."
     },
     {
       title: "Ориентация на результат",
@@ -794,8 +1097,8 @@ const Philosophy = () => {
               key={index}
               title={item.title}
               content={item.content}
-              isOpen={openIndex === index}
-              onClick={() => setOpenIndex(openIndex === index ? null : index)}
+              isOpen={openIndices.includes(index)}
+              onClick={() => setOpenIndices(prev => prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index])}
             />
           ))}
         </div>
@@ -831,8 +1134,8 @@ const AboutUs = () => {
   ];
 
   return (
-    <section className="py-24 overflow-hidden bg-[#1a1a1a] text-white">
-      <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
+    <section className="pt-12 pb-12 overflow-hidden bg-[#1a1a1a] text-white">
+      <div className="max-w-7xl mx-auto px-6 mb-8 text-center">
         <h2 className="text-sm font-bold uppercase tracking-widest text-white/40 mb-4">О НАС</h2>
         <motion.p 
           initial={{ opacity: 0, y: 20 }}
@@ -842,17 +1145,17 @@ const AboutUs = () => {
           className="text-lg md:text-xl font-medium leading-relaxed max-w-3xl mx-auto opacity-80 uppercase tracking-wider"
           style={{ fontVariant: 'small-caps' }}
         >
-          Сеть Фитнес Мастер и Леди Фитнес в Мурманске — это три спортивных клуба: 
-          Фитнес Мастер в Первомайском и Ленинском районах и женский спортивный клуб 
-          Леди Фитнес в Октябрьском. Первый наш клуб открылся в 1991 году.
+          Наша сеть в Мурманске — это три спортивных клуба: 
+          в Первомайском и Ленинском районах и женский спортивный клуб 
+          Леди Фитнес. Первый наш клуб открылся в 1991 году.
         </motion.p>
       </div>
 
-      <div className="relative flex overflow-x-hidden mb-24">
+      <div className="relative flex overflow-x-hidden mb-8">
         <motion.div 
           animate={{ x: ["0%", "-50%"] }}
           transition={{ 
-            duration: 40, 
+            duration: images.length * 3.33, 
             repeat: Infinity, 
             ease: "linear" 
           }}
@@ -863,7 +1166,7 @@ const AboutUs = () => {
               <img 
                 src={src} 
                 alt={`Gallery image ${idx}`} 
-                className="w-full h-full object-cover transition-all duration-500 opacity-60 hover:opacity-100"
+                className="w-full h-full object-cover transition-all duration-500"
                 referrerPolicy="no-referrer"
               />
             </div>
@@ -939,7 +1242,7 @@ const Footer = () => (
         </div>
       </div>
       <div className="text-[9px] font-bold uppercase tracking-widest text-black/40">
-        Сеть спортивных клубов в Мурманске <span className="italic">с 1991</span>
+        Сеть спортивных клубов в Мурманске<br/><span className="italic">с 1991</span>
       </div>
     </div>
   </footer>
@@ -978,47 +1281,58 @@ export default function App() {
       { count: "8 тренировок", price: "4100 ₽" }
     ],
     trainers: [
-      { name: "Арина Кузнецова", role: "Инструктор групповых программ", category: 'group', image: IMAGES.TRAINERS.ARINA },
-      { name: "Софья Калинина", role: "Инструктор групповых программ", category: 'group', image: IMAGES.TRAINERS.SOFYA },
-      { name: "Елена Шумилова", role: "Инструктор групповых программ", category: 'group', image: IMAGES.TRAINERS.ELENA },
-      { name: "Клавдия Прокофьева", role: "Инструктор групповых программ", category: 'group', image: IMAGES.TRAINERS.KLAVDIYA },
-      { name: "Надежда Палиенко", role: "Инструктор групповых программ", category: 'group', image: IMAGES.TRAINERS.NADEZHDA },
-      { name: "Александр Бердников", role: "Персональный тренер", category: 'gym', image: IMAGES.TRAINERS.ALEXANDER_B },
-      { name: "Николай Марук", role: "Персональный тренер", category: 'gym', image: IMAGES.TRAINERS.NIKOLAY },
-      { name: "Александр Кублицкий", role: "Персональный тренер", category: 'gym', image: IMAGES.TRAINERS.ALEXANDER_K },
-      { name: "Роза Соловьева", role: "Персональный тренер", category: 'gym', image: IMAGES.TRAINERS.ROZA }
+      { name: "Надежда Палиенко", role: "Инструктор групповых программ", category: 'group', image: "https://picsum.photos/seed/fit_trainer_1/400/500" },
+      { name: "Арина Кузнецова", role: "Инструктор групповых программ", category: 'group', image: "https://picsum.photos/seed/fit_trainer_2/400/500" },
+      { name: "Елена Шумилова", role: "Инструктор групповых программ", category: 'group', image: "https://picsum.photos/seed/fit_trainer_3/400/500" },
+      { name: "Софья Калинина", role: "Инструктор групповых программ", category: 'group', image: "https://picsum.photos/seed/fit_trainer_4/400/500" },
+      { name: "Клавдия Прокофьева", role: "Инструктор групповых программ", category: 'group', image: "https://picsum.photos/seed/fit_trainer_5/400/500" },
+      { name: "Александр Бердников", role: "Персональный тренер", category: 'gym', image: "https://picsum.photos/seed/fit_trainer_6/400/500" },
+      { name: "Николай Марук", role: "Персональный тренер", category: 'gym', image: "https://picsum.photos/seed/fit_trainer_7/400/500" },
+      { name: "Александр Кублицкий", role: "Персональный тренер", category: 'gym', image: "https://picsum.photos/seed/fit_trainer_8/400/500" },
+      { name: "Роза Соловьева", role: "Персональный тренер", category: 'gym', image: "https://picsum.photos/seed/fit_trainer_9/400/500" }
     ],
     schedules: {
       group: [
-        { title: "Зал 1 - ПН-СР-ПТ", image: IMAGES.SCHEDULE_ZONES.HALL_1_MON },
-        { title: "Зал 1 - ВТ-ЧТ-СБ", image: IMAGES.SCHEDULE_ZONES.HALL_1_TUE },
-        { title: "Зал 2 - Основное", image: IMAGES.SCHEDULE_ZONES.HALL_2 },
-        { title: "Йога и Пилатес", image: IMAGES.SCHEDULE_ZONES.YOGA }
+        { title: "Зал 1 - ПН-СР-ПТ", image: "https://picsum.photos/seed/fit_sched_1/800/1200" },
+        { title: "Зал 1 - ВТ-ЧТ-СБ", image: "https://picsum.photos/seed/fit_sched_2/800/1200" },
+        { title: "Зал 2 - Основное", image: "https://picsum.photos/seed/fit_sched_3/800/1200" },
+        { title: "Йога и Пилатес", image: "https://picsum.photos/seed/fit_sched_4/800/1200" }
       ],
       gym: [
-        { title: "Кардио зона", image: IMAGES.SCHEDULE_ZONES.CARDIO },
-        { title: "Свободные веса", image: IMAGES.SCHEDULE_ZONES.WEIGHTS },
-        { title: "Функциональный тренинг", image: IMAGES.SCHEDULE_ZONES.FUNCTIONAL },
-        { title: "Зона растяжки", image: IMAGES.SCHEDULE_ZONES.STRETCH }
+        { title: "Кардио зона", image: "https://picsum.photos/seed/fit_sched_5/800/1200" },
+        { title: "Свободные веса", image: "https://picsum.photos/seed/fit_sched_6/800/1200" },
+        { title: "Функциональный тренинг", image: "https://picsum.photos/seed/fit_sched_7/800/1200" },
+        { title: "Зона растяжки", image: "https://picsum.photos/seed/fit_sched_8/800/1200" }
       ]
     },
     classDescriptions: [
       { title: "Super Sculpt", type: "active", description: "Короткая разминка и силовая работа над всеми группами мышц" },
       { title: "New Power", type: "active", description: "Глубокая проработка всех мышечных групп с использованием степ-платформы и различного оборудования" },
       { title: "Round Power", type: "active", description: "Непрерывное выполнение ряда упражнений на все тело с короткими периодами отдыха" },
+      { title: "Step", type: "active", description: "Энергичная кардиотренировка с использованием степ-платформы" },
+      { title: "Шейпинг", type: "active", description: "Классическая аэробная система упражнений, направленная на коррекцию фигур" },
+      { title: "Body Pump", type: "active", description: "Взрывная тренировка со штангой" },
+      { title: "Fitball", type: "active", description: "Занятие c использованием большого гимнастического мяча" },
       { title: "Stretching", type: "soft", description: "Комплекс упражнений на растяжку" },
       { title: "Здоровая спина", type: "soft", description: "Коррекция мышц спины и улучшение осанки" },
-      { title: "Fitball", type: "soft", description: "Занятие c использованием большого гимнастического мяча" }
+      { title: "Stretching Roll", type: "soft", description: "Растяжка c использованием фитнес-ролика" },
+      { title: "Здоровая спина + МФР", type: "soft", description: "Спина в тонусе + упражнения с массажным роллером" },
+      { title: "Fitness Yoga", type: "soft", description: "Доступная йога для любого возраста и уровня подготовки" },
+      { title: "Soft Stretch", type: "soft", description: "Вечерний ритуал гибкости за 30 минут" },
+      { title: "Pilates", type: "soft", description: "Баланс внутри и снаружи по системе Пилатес" },
+      { title: "Zumba", type: "dance", description: "Сертифицированный класс - танцевальные занятия, которые заставляют сжигать калории с улыбкой" },
+      { title: "Belly Dance", type: "dance", description: "Танцевальные занятия на котором ваше тело заговорит на языке Востока" },
+      { title: "Кинезис", type: "kinesis", description: "Индивидуальный комплекс упражнений на специализированном оборудовании - оздоровление через движение" }
     ],
     infrastructure: ["Два зала групповых программ", "Тренажерный зал", "Душевые", "Студия Кинезис", "Кабинет диагностики"]
   };
 
   const pervomayskyTrainers = [
-    { name: "Арина Кузнецова", role: "Инструктор групповых программ", category: 'group', image: "/assets/trainers/nRHmXaoJnV0.jpg" },
-    { name: "Софья Калинина", role: "Инструктор групповых программ", category: 'group', image: "/assets/trainers/Xu-5KpoCa0s.jpg" },
-    { name: "Елена Шумилова", role: "Инструктор групповых программ", category: 'group', image: "/assets/trainers/hxAb_zzTgus.jpg" },
-    { name: "Клавдия Прокофьева", role: "Инструктор групповых программ", category: 'group', image: "/assets/trainers/VC4fxXQxSbE.jpg" },
     { name: "Надежда Палиенко", role: "Инструктор групповых программ", category: 'group', image: "/assets/trainers/_rzYpd-Nxy0.jpg" },
+    { name: "Арина Кузнецова", role: "Инструктор групповых программ", category: 'group', image: "/assets/trainers/nRHmXaoJnV0.jpg" },
+    { name: "Елена Шумилова", role: "Инструктор групповых программ", category: 'group', image: "/assets/trainers/Xu-5KpoCa0s.jpg" },
+    { name: "Софья Калинина", role: "Инструктор групповых программ", category: 'group', image: "/assets/trainers/hxAb_zzTgus.jpg" },
+    { name: "Клавдия Прокофьева", role: "Инструктор групповых программ", category: 'group', image: "/assets/trainers/VC4fxXQxSbE.jpg" },
     { name: "Александр Бердников", role: "Персональный тренер", category: 'gym', image: "/assets/trainers/N0RtdYI2azM.jpg" },
     { name: "Николай Марук", role: "Персональный тренер", category: 'gym', image: "/assets/trainers/vmCpSJBADGk.jpg" },
     { name: "Александр Кублицкий", role: "Персональный тренер", category: 'gym', image: "/assets/trainers/KhT3u63ZIRY.jpg" },
@@ -1056,6 +1370,39 @@ export default function App() {
     "/assets/gallery/pervomaysky/064.jpg"
   ];
 
+  const leninskyGallery = [
+    "/assets/gallery/leninsky/UhS9Shdo62J7HVgy84ot.jpg",
+    "/assets/gallery/leninsky/fx9pPcG2v-aZGCMPbILt.jpg",
+    "/assets/gallery/leninsky/Ov7oC-cV-_t1WktXuQi1.jpg",
+    "/assets/gallery/leninsky/GYbevs3SQT71rtJZxD4b.jpg",
+    "/assets/gallery/leninsky/nJbk5pqcfAiXmW8kBqHm.jpg",
+    "/assets/gallery/leninsky/KLGBVFeHWfdk22_i7366.jpg",
+    "/assets/gallery/leninsky/B2e1pdKAhCfXAogrQ7iD.jpg",
+    "/assets/gallery/leninsky/FQpZPvD36wb9Bv4hxRCU.jpg",
+    "/assets/gallery/leninsky/rJ9t35HFr7DuWT1Fivh1.jpg",
+    "/assets/gallery/leninsky/4kxFSv6VclXrwvUrlU1z.jpg",
+    "/assets/gallery/leninsky/BwxJZGmMehqLhy6aCOKm.jpg",
+    "/assets/gallery/leninsky/tUz3o2HQ0EKRenIiRb5g.jpg",
+    "/assets/gallery/leninsky/DJgkSQENRCzwUs_diXfR.jpg",
+    "/assets/gallery/leninsky/oa-ce6pkhjd4zk9-tzNC.jpg",
+    "/assets/gallery/leninsky/y5G85PYx5A4Ajtlj1Ox1.jpg"
+  ];
+
+  const ladyGallery = [
+    "/assets/gallery/lady/ntitYAlJw7Y5MPCxAPyY.jpg",
+    "/assets/gallery/lady/EAzCEA0aI2iGais9pMNl.jpg",
+    "/assets/gallery/lady/WvXPxRQj3xOmtQ-iXn9b.jpg",
+    "/assets/gallery/lady/UoTA9aLKtCv181T9RJgX.jpg",
+    "/assets/gallery/lady/pNmhO8fAV36kIkb2SZXG.jpg",
+    "/assets/gallery/lady/UHiF44RxQ2YxIT5XHdS1.jpg",
+    "/assets/gallery/lady/ydEUl94WzxY3E9eEkz8j.jpg",
+    "/assets/gallery/lady/l6cenHUxUgda3979IxLP.jpg",
+    "/assets/gallery/lady/JklfZoQniA6QVaFYkDSb.jpg",
+    "/assets/gallery/lady/TS9ruhNRitbGXTVYDj32.jpg",
+    "/assets/gallery/lady/coGbDL4Ib8DkEi9Bzgl9.jpg",
+    "/assets/gallery/lady/BmeSc0QI6svcvXcjvVvk.jpg"
+  ];
+
   return (
     <BrowserRouter>
       <div className="min-h-screen flex flex-col">
@@ -1068,7 +1415,8 @@ export default function App() {
               <DistrictBanner />
               
               <ClubSection 
-                name="Фитнес Мастер Первомайский"
+                id="club-pervomaysky"
+                name="Первомайский"
                 phone="+7 (8152) 53-97-25"
                 address="пр. Кольский 178, 4 этаж"
                 logo="/master.png"
@@ -1079,22 +1427,25 @@ export default function App() {
               />
 
               <ClubSection 
-                name="Фитнес Мастер Ленинский"
+                id="club-leninsky"
+                name="Ленинский"
                 phone="+7 (8152) 41-25-88"
                 address="ул. Хлобыстова 41А"
                 logo="/master.png"
-                galleryImages={IMAGES.CLUB_GALLERY}
+                galleryImages={leninskyGallery}
                 {...clubData}
               />
 
               <ClubSection 
-                name="Леди Фитнес Октябрьский"
+                id="club-lady"
+                name="Леди Фитнес"
                 phone="+7 (8152) 45-78-57"
                 address="ул. Воровского 15A"
                 logo="/lady.png"
                 logoClassName="h-16 w-auto object-contain"
-                galleryImages={IMAGES.CLUB_GALLERY}
+                galleryImages={ladyGallery}
                 {...clubData}
+                showName={false}
               />
 
               <AboutUs />

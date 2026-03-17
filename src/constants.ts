@@ -32,12 +32,19 @@ export const IMAGES = {
 
   // Галерея в разделе "О нас" (снизу)
   ABOUT_GALLERY: [
-    "/assets/about/gallery-1.jpg",
-    "/assets/about/gallery-2.jpg",
-    "/assets/about/gallery-3.jpg",
-    "/assets/about/gallery-4.jpg",
-    "/assets/about/gallery-5.jpg",
-    "/assets/about/gallery-6.jpg",
+    "/assets/about/3qR-s7NEt4Q.jpg",
+    "/assets/about/9zDAbaAasfw.jpg",
+    "/assets/about/ChBbrzBEAYc.jpg",
+    "/assets/about/E_X6-r4yA0w.jpg",
+    "/assets/about/HDtjxTElwIQ.jpg.webp",
+    "/assets/about/ROL5hwSfTzE.jpg",
+    "/assets/about/Wmb9sX47xTU.jpg",
+    "/assets/about/g8I6Gi-Hqwc.jpg.webp",
+    "/assets/about/gzbaTQVW8ro.jpg",
+    "/assets/about/m7huFWxu-AU.jpg.webp",
+    "/assets/about/tfvjb3M0Rwg.jpg",
+    "/assets/about/w8ijEYf4DJg.jpg",
+    "/assets/about/wvFBBl6MrVk.jpg",
   ],
 
   // Тренеры
