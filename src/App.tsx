@@ -561,6 +561,7 @@ const ClubSection = ({
   const [openIndices, setOpenIndices] = useState<number[]>([]);
   const [activeTrainerTab, setActiveTrainerTab] = useState<'group' | 'gym'>('group');
   const [activeScheduleTab, setActiveScheduleTab] = useState<'group' | 'gym'>('group');
+  const [activeClassTypeTab, setActiveClassTypeTab] = useState<'active' | 'soft' | 'dance' | 'kinesis'>('active');
   const [selectedScheduleImage, setSelectedScheduleImage] = useState<string | null>(null);
 
   const accordionItems = [
@@ -725,12 +726,30 @@ const ClubSection = ({
 
           {activeScheduleTab === 'group' && (
             <div className="space-y-4 pt-1 -mt-[0.6rem]">
-              <div className="text-[10px] font-bold uppercase tracking-widest text-black/40">Тренировки в расписании</div>
-              <div className="grid grid-cols-1 gap-3 pb-2">
-                {classDescriptions.map((cls, i) => (
+              <div className="flex gap-4 border-b border-black/5 overflow-x-auto no-scrollbar">
+                {[
+                  { id: 'active', label: 'Активные' },
+                  { id: 'soft', label: 'Мягкие' },
+                  { id: 'dance', label: 'Танцы' },
+                  { id: 'kinesis', label: 'Кинезис' }
+                ].map(tab => (
+                  <button 
+                    key={tab.id}
+                    onClick={() => setActiveClassTypeTab(tab.id as any)}
+                    className={`pb-4 text-[10px] font-bold uppercase tracking-widest transition-all relative whitespace-nowrap ${activeClassTypeTab === tab.id ? 'text-black' : 'text-black/40'}`}
+                  >
+                    {tab.label}
+                    {activeClassTypeTab === tab.id && (
+                      <motion.div layoutId={`activeClassTypeTab-${name}`} className="absolute bottom-0 left-0 right-0 h-0.5 bg-black" />
+                    )}
+                  </button>
+                ))}
+              </div>
+              <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:pb-0 no-scrollbar">
+                {classDescriptions.filter(cls => cls.type === activeClassTypeTab).map((cls, i) => (
                   <div 
                     key={i} 
-                    className={`p-4 rounded-2xl border border-black/5 ${
+                    className={`w-[60vw] min-w-[200px] md:w-56 flex-shrink-0 snap-center aspect-square flex flex-col p-6 rounded-2xl border border-black/5 ${
                       cls.type === 'active' 
                         ? 'bg-gradient-to-br from-[#f7fee7] to-[#ecfccb]' 
                         : cls.type === 'dance'
@@ -740,19 +759,19 @@ const ClubSection = ({
                         : 'bg-gradient-to-br from-[#eff6ff] to-[#dbeafe]'
                     }`}
                   >
-                    <h5 className="text-xs font-bold uppercase mb-1 tracking-tight flex items-center gap-1.5">
+                    <h5 className="text-sm font-black uppercase tracking-tight flex items-center gap-2 mb-3">
                       {cls.type === 'active' ? (
-                        <Zap size={12} className="text-brand-black" />
+                        <Zap size={16} className="text-brand-black" />
                       ) : cls.type === 'dance' ? (
-                        <Music size={12} className="text-brand-black" />
+                        <Music size={16} className="text-brand-black" />
                       ) : cls.type === 'kinesis' ? (
-                        <Activity size={12} className="text-brand-black" />
+                        <Activity size={16} className="text-brand-black" />
                       ) : (
-                        <Circle size={12} className="text-brand-black" />
+                        <Circle size={16} className="text-brand-black" />
                       )}
                       {cls.title}
                     </h5>
-                    <p className="text-[11px] text-black/60 leading-tight">{cls.description}</p>
+                    <p className="text-xs text-black/60 leading-tight font-medium">{cls.description}</p>
                   </div>
                 ))}
               </div>
@@ -1250,7 +1269,7 @@ const Footer = () => (
 
 const FloatingPhoneButton = () => (
   <motion.a
-    href="tel:+78152539725"
+    href="tel:+78152707023"
     initial={{ scale: 0, opacity: 0 }}
     animate={{ scale: 1, opacity: 1 }}
     whileHover={{ scale: 1.1 }}
